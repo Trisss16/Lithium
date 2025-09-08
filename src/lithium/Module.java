@@ -18,9 +18,10 @@ public class Module {
     private String[] lines;
     
     public Module(String moduleName) {
-        //Recibe la ruta absoluta del modulo, y comprueba que el archivo sea .ltm
+        //Recibe el nombre del modulo y comprueba que el archivo sea .ltm
         
         this.absolutePath = Lithium.parentFile + "\\" + moduleName;
+        System.out.println(absolutePath);
         file = new File(absolutePath);
         
         checkFileType();
@@ -31,21 +32,24 @@ public class Module {
         }
         
         System.out.println("reading file");
+        
         try {  
-            ArrayList<String> linesList = new ArrayList<String>();
+            ArrayList<String> linesList = new ArrayList<>();
             
             Scanner sc = new Scanner(file);
             while(sc.hasNextLine()) {
                 linesList.add(sc.nextLine());
             }
             
-            lines = linesList.toArray(lines);
+            lines = linesList.toArray(new String[0]);
             
-        } catch(Exception e) {
+        } catch(FileNotFoundException e) {
             System.out.println("Could not read file: " + e);
             System.exit(0);
         }
         
+        //imprimir el contenido
+        System.out.println("Contenido del modulo:");
         for (String i: lines) {
             System.out.println(i);
         }
@@ -54,7 +58,6 @@ public class Module {
     
     private void checkFileType() {
         String fileType = absolutePath.substring(absolutePath.length() - 4);
-        System.out.println(fileType);
         
         if (!fileType.equals(".ltm")) {
             System.out.println("Invalid file type.");
@@ -62,7 +65,7 @@ public class Module {
         }
         
         if (!file.canRead()) {
-            System.out.println("coulnt read file");
+            System.out.println("could not read file.");
             System.exit(0);
         }
     }
